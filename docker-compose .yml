@@ -1,0 +1,71 @@
+version: "3"
+services: 
+  AuthentcationService: 
+    container_name: bookDeal_authname
+    depends_on: 
+      - mysql
+    image: sakethraj/bookdeal_authserv
+    network_mode: host
+    ports: 
+      - "8761:8761"
+    restart: always
+  mongo: 
+    container_name: mongocontainer
+    environment: 
+      MONGO_URL: "mongodb://localhost:27017/ustgbootnew"
+    image: "mongo:3.4-jessie"
+    network_mode: host
+    ports: 
+      - "27017:27017"
+  mysql: 
+    container_name: sqlcontainer
+    environment: 
+      MYSQL_MY_URL: "jdbc:mysql://localhost:3306/bootuser?createDatabaseIfNotExist=true&user=root&password=root"
+      MYSQL_ROOT_PASSWORD: root
+    image: mysql
+    network_mode: host
+    ports: 
+      - "3306:3306"
+  FavouriteServ: 
+    container_name: bookdeal_favServ
+    depends_on: 
+      - mongo
+    image: sakethraj/bookdeal_favserv
+    network_mode: host
+    ports: 
+      - "8098:8098"
+    restart: always
+  FeedbackService: 
+    container_name: bookdeal_feedbackServ
+    depends_on: 
+      - mongo
+    image: sakethraj/bookdeal_feedserv
+    network_mode: host
+    ports: 
+      - "8082:8082"
+    restart: always
+  EurekaServer: 
+    container_name: eurekacontainer
+    image: sakethraj/bookdeal_eureka
+    network_mode: host
+    ports: 
+      - "8761:8761"
+    restart: always
+  Zuulgateway: 
+    container_name: zuulapicontainer
+    image: sakethraj/bookdeal_zuul
+    network_mode: host
+    ports: 
+      - "8079:8079"
+    restart: always
+  TopFavourites: 
+    container_name: bookdeal_Topfav
+    depends_on: 
+      - mongo
+    image: sakethraj/bookdeal_topfav
+    network_mode: host
+    ports: 
+      - "9091:9091"
+    restart: always
+
+
